@@ -17,7 +17,7 @@ paths AS (
            roads.point1,
            roads.point2,
            roads.cost,
-           roads.cost AS summ
+           roads.cost AS total_cost
     FROM roads
     WHERE roads.point1 = 'a'
 
@@ -27,12 +27,12 @@ paths AS (
            roads.point1,
            roads.point2,
            roads.cost,
-           paths.summ + roads.cost AS summ
+           paths.total_cost + roads.cost AS total_cost
     FROM paths JOIN roads ON paths.point2 = roads.point1
     WHERE ARRAY_POSITION(paths.tour, roads.point2) IS NULL),
 
 valid_tours AS (
-    SELECT paths.summ + roads.cost AS total_cost,
+    SELECT paths.total_cost + roads.cost AS total_cost,
            ARRAY_APPEND(paths.tour, 'a') AS tour
     FROM paths
     JOIN roads ON paths.point2 = roads.point1 AND roads.point2 = 'a'
